@@ -7,6 +7,8 @@ const API = axios.create({
 
 // Front-end eken yawa hama request ekakatama JWT Token eka auto attach karanna
 API.interceptors.request.use((config) => {
+  config.headers = config.headers || {};
+
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
