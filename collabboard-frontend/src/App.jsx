@@ -30,9 +30,9 @@ function App() {
       {/* User log wela innawanam Navbar eka saha TaskBoard view eka render wenawa */}
       {user ? (
         <>
-          <Navbar user={user} onLogout={handleLogout} />
+          <Navbar user={user} />
           <main className="app-main">
-            <TaskBoard />
+            <TaskBoard onLogout={handleLogout} />
           </main>
         </>
       ) : (

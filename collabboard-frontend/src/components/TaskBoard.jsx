@@ -50,37 +50,61 @@ const TaskBoard = ({ onLogout }) => {
   };
 
   return (
-    <div style={{ padding: '20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h2>Collaborative Task Board</h2>
-        <button onClick={onLogout}>Logout</button>
+    <div className="board-wrapper">
+      <div className="board-header">
+        <h2 className="board-title">Collaborative Task Board</h2>
+        <button type="button" className="logout-button" onClick={onLogout}>
+          Logout
+        </button>
       </div>
 
-      {/* Add Task Form */}
-      <form onSubmit={handleAddTask} style={{ marginBottom: '20px' }}>
-        <input 
-          type="text" 
-          value={title} 
-          onChange={(e) => setTitle(e.target.value)} 
-          placeholder="New task name..." 
+      <form className="task-form" onSubmit={handleAddTask}>
+        <input
+          className="task-input"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="New task name..."
         />
-        <button type="submit">Add Task</button>
+        <button type="submit" className="task-submit">Add Task</button>
       </form>
 
-      {/* Task Columns */}
-      <div style={{ display: 'flex', gap: '20px' }}>
+      <div className="board-grid">
         {['To Do', 'Doing', 'Done'].map(col => (
-          <div key={col} style={{ flex: 1, border: '1px solid #ccc', padding: '10px', borderRadius: '5px' }}>
-            <h4>{col}</h4>
-            {tasks.filter(t => t.status === col).map(t => (
-              <div key={t.id} style={{ background: '#f4f4f4', padding: '10px', margin: '8px 0', borderRadius: '4px' }}>
-                <p><strong>{t.title}</strong></p>
-                {col !== 'Done' && (
-                  <button onClick={() => handleMoveStatus(t.id, t.status)}>Move ➔</button>
-                )}
-                <button onClick={() => handleDelete(t.id)} style={{ marginLeft: '5px' }}>Delete</button>
-              </div>
-            ))}
+          <div key={col} className="board-column">
+            <h3 className="board-column-header">{col}</h3>
+
+            {tasks.filter(t => t.status === col).length === 0 ? (
+              <div className="empty-column"> </div>
+            ) : (
+              tasks
+                .filter(t => t.status === col)
+                .map(t => (
+                  <div key={t.id} className="task-card">
+                    <p className="task-card-title">{t.title}</p>
+
+                    <div className="task-card-actions">
+                      {col !== 'Done' && (
+                        <button
+                          type="button"
+                          className="task-action-button"
+                          onClick={() => handleMoveStatus(t.id, t.status)}
+                        >
+                          Move <span>→</span>
+                        </button>
+                      )}
+
+                      <button
+                        type="button"
+                        className="task-delete-button"
+                        onClick={() => handleDelete(t.id)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))
+            )}
           </div>
         ))}
       </div>
