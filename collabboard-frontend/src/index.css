@@ -284,17 +284,18 @@ select {
 
 .logout-button {
   padding: 10px 18px;
-  border: 1px solid #d1d5db;
+  border: 1px solid #bfdbfe;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.5);
-  color: #111827;
-  font-weight: 600;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: #fff;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 8px 16px rgba(37, 99, 235, 0.25);
 }
 
 .logout-button:hover {
-  background: #f3f4f6;
+  background: linear-gradient(135deg, #1d4ed8, #1e40af);
 }
 
 .task-form {
@@ -370,16 +371,30 @@ select {
 .task-action-button,
 .task-delete-button {
   padding: 8px 12px;
-  border: 1px solid #cbd5e1;
+  border: none;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.8);
-  color: #111827;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
+  transition: filter 0.2s ease, transform 0.2s ease;
+}
+
+.task-action-button {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.2);
 }
 
 .task-delete-button {
   margin-left: auto;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(220, 38, 38, 0.2);
+}
+
+.task-action-button:hover,
+.task-delete-button:hover {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
 }
 
 .empty-column {
