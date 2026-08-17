@@ -1,3 +1,5 @@
+// Auth & Login Interface - Developed by KANPerera
+
 import React, { useState } from 'react';
 import { loginUser, registerUser } from '../services/apiServices';
 import '../styles/auth.css';
