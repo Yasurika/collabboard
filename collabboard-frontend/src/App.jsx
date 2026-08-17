@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import TaskBoard from './components/TaskBoard';
 import Login from './components/Login';
+import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
