@@ -5,7 +5,7 @@ const API = axios.create({
   baseURL: 'http://localhost:5000/api',
 });
 
-// Front-end eken yawa hama request ekakatama JWT Token eka auto attach karanna
+
 API.interceptors.request.use((config) => {
   config.headers = config.headers || {};
 
