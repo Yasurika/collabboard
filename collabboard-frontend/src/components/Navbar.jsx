@@ -1,3 +1,4 @@
+// Navigation Bar & Profile Header - Developed by Udara Poorni
 import React from 'react';
 
 const activeMembers = [
