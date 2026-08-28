@@ -1,0 +1,191 @@
+{
+	"info": {
+		"_postman_id": "e7915808-1699-495c-8d9a-acef0020406b",
+		"name": "CollabBoard API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "50194281",
+		"_collection_link": "https://yasurikanahomani2003-3927270.postman.co/workspace/Yasurika-Nahomani's-Workspace~63968cef-30f3-4943-8b79-f52ad212fcc8/collection/50194281-e7915808-1699-495c-8d9a-acef0020406b?source=collection_link"
+	},
+	"item": [
+		{
+			"name": "POST Login User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3ODc4OTIxOTYzNjMiLCJuYW1lIjoiWWFzdXJpa2EgS3VydXBwdSIsImlhdCI6MTc4Nzg5MjIyNCwiZXhwIjoxNzg3ODk5NDI0fQ.8xPwUt3P8VCusW6WMmuYelU_qetBzvm9SG0jeBaJVco",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"yasu@gmail.com\",\r\n  \"password\": \"1234\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Tasks",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3ODc4OTIxOTYzNjMiLCJuYW1lIjoiWWFzdXJpa2EgS3VydXBwdSIsImlhdCI6MTc4Nzg5MjIyNCwiZXhwIjoxNzg3ODk5NDI0fQ.8xPwUt3P8VCusW6WMmuYelU_qetBzvm9SG0jeBaJVco",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3ODc4OTIxOTYzNjMiLCJuYW1lIjoiWWFzdXJpa2EgS3VydXBwdSIsImlhdCI6MTc4Nzg5MjIyNCwiZXhwIjoxNzg3ODk5NDI0fQ.8xPwUt3P8VCusW6WMmuYelU_qetBzvm9SG0jeBaJVco",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"title\": \"Implement REST API Integration\",\r\n  \"description\": \"Connect React frontend with Express backend APIs\",\r\n  \"status\": \"In Progress\",\r\n  \"priority\": \"High\",\r\n  \"assignee\": \"Yasurika\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/tasks",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"tasks"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3ODc4OTIxOTYzNjMiLCJuYW1lIjoiWWFzdXJpa2EgS3VydXBwdSIsImlhdCI6MTc4Nzg5MjIyNCwiZXhwIjoxNzg3ODk5NDI0fQ.8xPwUt3P8VCusW6WMmuYelU_qetBzvm9SG0jeBaJVco",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"status\": \"Completed\",\r\n  \"priority\": \"Medium\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/api/tasks/1787893489357",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"tasks",
+						"1787893489357"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjE3ODc4OTIxOTYzNjMiLCJuYW1lIjoiWWFzdXJpa2EgS3VydXBwdSIsImlhdCI6MTc4Nzg5MjIyNCwiZXhwIjoxNzg3ODk5NDI0fQ.8xPwUt3P8VCusW6WMmuYelU_qetBzvm9SG0jeBaJVco",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/api/tasks/1787893489357",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"api",
+						"tasks",
+						"1787893489357"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
