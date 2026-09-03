@@ -6,13 +6,29 @@ import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
+  const [isAuthChecked, setIsAuthChecked] = useState(false);
 
-  // App eka load weddi localStorage eke User/Token thiyenawada balana eka
   useEffect(() => {
-    const savedUser = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
-    if (savedUser && token) {
-      setUser(JSON.parse(savedUser));
+    try {
+      const savedUser = localStorage.getItem('user');
+      const token = localStorage.getItem('token');
+
+      if (savedUser && savedUser !== 'undefined' && token) {
+        const parsedUser = JSON.parse(savedUser);
+
+        if (parsedUser && parsedUser._id && parsedUser.email) {
+          setUser(parsedUser);
+        } else {
+          localStorage.removeItem('user');
+          localStorage.removeItem('token');
+        }
+      }
+    } catch (err) {
+      console.error('Invalid stored user JSON:', err);
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+    } finally {
+      setIsAuthChecked(true);
     }
   }, []);
 
@@ -26,18 +42,20 @@ function App() {
     setUser(null);
   };
 
+  if (!isAuthChecked) {
+    return null;
+  }
+
   return (
     <div className="app-shell">
-      {/* User log wela innawanam Navbar eka saha TaskBoard view eka render wenawa */}
       {user ? (
         <>
           <Navbar user={user} />
           <main className="app-main">
-            <TaskBoard onLogout={handleLogout} />
+            <TaskBoard user={user} onLogout={handleLogout} />
           </main>
         </>
       ) : (
-        /* User log wela nathnam Login view eka render wenawa */
         <main className="app-main">
           <Login onLoginSuccess={handleLoginSuccess} />
         </main>

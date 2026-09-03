@@ -10,19 +10,49 @@ const Login = ({ onLoginSuccess }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const validateForm = () => {
+    const trimmedName = formData.name.trim();
+    const trimmedEmail = formData.email.trim();
+    const trimmedPassword = formData.password;
+
+    if (isRegister && !trimmedName) {
+      return 'Full name is required.';
+    }
+
+    if (!trimmedEmail) {
+      return 'Email is required.';
+    }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(trimmedEmail)) {
+      return 'Please enter a valid email address.';
+    }
+
+    if (!trimmedPassword || trimmedPassword.length < 6) {
+      return 'Password must be at least 6 characters long.';
+    }
+
+    if (isRegister && trimmedPassword !== formData.confirmPassword) {
+      return 'Passwords do not match.';
+    }
+
+    return '';
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    const validationError = validateForm();
+    if (validationError) {
+      setError(validationError);
+      return;
+    }
+
     setLoading(true);
 
     try {
       if (isRegister) {
-        if (formData.password !== formData.confirmPassword) {
-          setError('Passwords do not match');
-          setLoading(false);
-          return;
-        }
-
         const payload = {
           name: formData.name.trim(),
           email: formData.email.trim(),
@@ -40,10 +70,15 @@ const Login = ({ onLoginSuccess }) => {
           password: formData.password,
         });
 
-        localStorage.setItem('token', res.data.token);
-        localStorage.setItem('user', JSON.stringify(res.data.user));
+        const userData = res.data.user || {
+          _id: res.data._id || res.data.id,
+          name: res.data.name,
+          email: res.data.email,
+        };
 
-        onLoginSuccess(res.data.user);
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('user', JSON.stringify(userData));
+        onLoginSuccess(userData);
       }
     } catch (err) {
       setError(err.response?.data?.message || '❌ Something went wrong. Please try again.');

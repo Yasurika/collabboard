@@ -1,59 +1,103 @@
+const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { users } = require('../models/taskModel');
 
-// User Register Logic
-exports.register = async (req, res) => {
+const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+// Register User
+exports.registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const name = (req.body.name || '').trim();
+    const email = (req.body.email || '').trim().toLowerCase();
+    const password = req.body.password || '';
 
     if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Please enter all fields' });
+      return res.status(400).json({ message: 'Please fill all fields' });
     }
 
-    const existingUser = users.find(u => u.email === email);
-    if (existingUser) {
+    if (!validateEmail(email)) {
+      return res.status(400).json({ message: 'Please enter a valid email address' });
+    }
+
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+    }
+
+    const userExists = await User.findOne({ email });
+    if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
 
-    // Password Hashing
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const newUser = { id: Date.now().toString(), name, email, password: hashedPassword };
-    users.push(newUser);
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-    res.status(201).json({ message: 'User registered successfully!' });
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword
+    });
+
+    const token = jwt.sign(
+      { id: user._id },
+      process.env.JWT_SECRET || 'secretkey',
+      { expiresIn: '30d' }
+    );
+
+    return res.status(201).json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+      token,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Server Error', error: error.message });
+    console.error('Register Error:', error);
+    return res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
-// User Login Logic
-exports.login = async (req, res) => {
+// Login User
+exports.loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = (req.body.email || '').trim().toLowerCase();
+    const password = req.body.password || '';
 
-    const user = users.find(u => u.email === email);
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Email and password are required' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
+    const user = await User.findOne({ email });
+
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    // JWT Token Generation
     const token = jwt.sign(
-      { id: user.id, name: user.name },
-      process.env.JWT_SECRET || 'secretkey123',
-      { expiresIn: '2h' }
+      { id: user._id },
+      process.env.JWT_SECRET || 'secretkey',
+      { expiresIn: '30d' }
     );
 
-    res.json({
+    return res.json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
       token,
-      user: { id: user.id, name: user.name, email: user.email }
     });
   } catch (error) {
-    res.status(500).json({ message: 'Server Error', error: error.message });
+    console.error('Login Error:', error);
+    return res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
+exports.getUsers = async (req, res) => {
+  try {
+    const users = await User.find({}).select('_id name email').sort({ name: 1 });
+    res.status(200).json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Error fetching users', error: error.message });
   }
 };

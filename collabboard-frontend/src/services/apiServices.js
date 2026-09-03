@@ -4,6 +4,7 @@ import API from '../api';
 // Auth Endpoints
 export const registerUser = (userData) => API.post('/auth/register', userData);
 export const loginUser = (credentials) => API.post('/auth/login', credentials);
+export const fetchUsers = () => API.get('/auth/users');
 
 // Task CRUD Endpoints
 export const fetchTasks = () => API.get('/tasks');
